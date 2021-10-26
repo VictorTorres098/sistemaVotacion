@@ -7,6 +7,8 @@ public class Persona {
 	private boolean enfPrevia;
 	private boolean trabaja;
 	private boolean esPresidente;
+	private boolean turno;
+	private boolean voto;
 	
 	public Persona(String nombre, Integer dni, int edad, boolean enfPrevia, boolean trabaja) throws Exception{
 		if(edad<16) {
@@ -18,12 +20,26 @@ public class Persona {
 		this.enfPrevia = enfPrevia;
 		this.trabaja = trabaja;
 		this.esPresidente = false;
+		this.turno = false;
+		this.voto = false;
 	}
 	public boolean esPresidenteDeMesa() {
 		return esPresidente; //en caso de ser presidente retorna true
 	}
 	public boolean tieneCondicionEspecial() {
 		return (this.enfPrevia || this.trabaja || edad >= 65); // en caso de cumplir algunas de estas condiciones retorna true
+	}
+	public boolean tieneTurnoAsignado() {
+		return this.turno;
+	}
+	public void confirmarTurno() {
+		this.turno = true;
+	}
+	public boolean voto() {
+		return this.voto;
+	}
+	public void confirmarVoto() {
+		this.voto = true;
 	}
 	
 

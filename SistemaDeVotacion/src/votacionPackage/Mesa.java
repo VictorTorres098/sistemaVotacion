@@ -12,4 +12,8 @@ public abstract class Mesa {
 	public abstract int cuposRestante();
 	
 	public abstract int consultarCuposTotales();
+	
+	public abstract int cantidadDeTurnosDesignados();
+	
+	public abstract String tipoDeMesa();
 }
