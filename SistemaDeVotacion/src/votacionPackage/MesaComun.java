@@ -1,6 +1,35 @@
 package votacionPackage;
 
+import java.util.HashMap;
+
 public class MesaComun extends Mesa {
+	private String tipoMesa;
+	private Integer cod;
+	private int presidenteMesa;
+	private HashMap<Integer, Integer> franjasHorariasDisponibles;
+	private Integer cupos;
+	
+	public MesaComun(String tipoMesa, Integer cod, int presidenteMesa) {
+		this.tipoMesa = tipoMesa;
+		this.cod = cod;
+		this.presidenteMesa = presidenteMesa;
+		this.franjasHorariasDisponibles = new HashMap<Integer, Integer>();
+		this.cupos = 30;
+		//de 8 hasta 18 = 10 franjas, cupos = 30
+		franjasHorariasDisponibles.put(8, cupos);
+		franjasHorariasDisponibles.put(9, cupos);
+		franjasHorariasDisponibles.put(10, cupos);
+		franjasHorariasDisponibles.put(11, cupos);
+		franjasHorariasDisponibles.put(12, cupos);
+		franjasHorariasDisponibles.put(13, cupos);
+		franjasHorariasDisponibles.put(14, cupos);
+		franjasHorariasDisponibles.put(15, cupos);
+		franjasHorariasDisponibles.put(16, cupos);
+		franjasHorariasDisponibles.put(17, cupos);
+		franjasHorariasDisponibles.put(18, cupos);
+		
+	}
+	
 
 	@Override
 	public void designarPresidente(int dni) {
@@ -30,6 +59,43 @@ public class MesaComun extends Mesa {
 	public String tipoDeMesa() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override // tratar de mejorar
+	public int dameFranjaHorariaDisponible() {
+		Integer horarioDisponible = 0;
+		for(Integer horario : franjasHorariasDisponibles.keySet()) {
+			if(tieneCuposDisponibles(horario)) {
+				horarioDisponible = horario;
+			}else {
+				horarioDisponible = 0;
+			}
+		}
+		return horarioDisponible;
+	}
+	@Override 
+	//private
+	public boolean tieneCuposDisponibles(Integer horario) {
+		if( franjasHorariasDisponibles.get(horario) <= 30 ) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+
+	@Override
+	public void descontarUnCupoDeFranja(Integer horario) {
+		
+		
+	}
+
+
+	@Override
+	public int dameCodigoDeMesa() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

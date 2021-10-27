@@ -9,6 +9,9 @@ public class Persona {
 	private boolean esPresidente;
 	private boolean turno;
 	private boolean voto;
+	private Tupla<Integer, Integer> dondeVota;
+//	private Integer mesa;
+//	private Integer franja;
 	
 	public Persona(String nombre, Integer dni, int edad, boolean enfPrevia, boolean trabaja) throws Exception{
 		if(edad<16) {
@@ -22,12 +25,29 @@ public class Persona {
 		this.esPresidente = false;
 		this.turno = false;
 		this.voto = false;
+		//dondeVota = null;
+//		this.mesa = 0;
+//		this.franja = 0;
 	}
 	public boolean esPresidenteDeMesa() {
 		return esPresidente; //en caso de ser presidente retorna true
 	}
 	public boolean tieneCondicionEspecial() {
 		return (this.enfPrevia || this.trabaja || edad >= 65); // en caso de cumplir algunas de estas condiciones retorna true
+	}
+	//comprobacion de condiciones especiales de persona
+	public boolean tieneEnfPrevia() {
+		return enfPrevia;
+	}
+	public boolean trabajaDiaVotacion() {
+		return trabaja;
+	}
+	public boolean esMayorDeEdad() {
+		if(this.edad>=65) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	public boolean tieneTurnoAsignado() {
 		return this.turno;
@@ -40,6 +60,12 @@ public class Persona {
 	}
 	public void confirmarVoto() {
 		this.voto = true;
+	}
+	public void asignarMesaYFranja(Integer mesa, Integer franja) {
+		this.dondeVota = new Tupla<Integer, Integer>(mesa, franja);
+	}
+	public Tupla<Integer, Integer> devolverTurnoPersona(){
+		return dondeVota;
 	}
 	
 

@@ -4,6 +4,7 @@ public class MesaPersonaDeRiesgo extends Mesa {
 	private String tipoMesa;
 	private Integer cod;
 	private int presidenteMesa;
+	//cupos 20 x franjahoraria
 	
 	public MesaPersonaDeRiesgo(String tipoMesa, Integer cod, int presidenteMesa) {
 		this.tipoMesa = tipoMesa;
@@ -36,6 +37,26 @@ public class MesaPersonaDeRiesgo extends Mesa {
 	public String tipoDeMesa() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public int dameFranjaHorariaDisponible() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public boolean tieneCuposDisponibles(Integer horario) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void descontarUnCupoDeFranja(Integer horario) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int dameCodigoDeMesa() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

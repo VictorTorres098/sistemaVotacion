@@ -34,24 +34,33 @@ public class SistemaVotacion {
 	public boolean tieneTurnoAsignado(int dni) {
 		return votantes.get(dni).tieneTurnoAsignado();
 	}
-	
-	public int agregarMesa(String tipoMesa, int dni) {
+	/* Agregar una nueva mesa del tipo dado en el parámetro y asignar el presidente
+	* de cada una, el cual deberá estar entre los votantes registrados y sin turno asignado.
+	* - Devuelve el número de mesa creada.
+	* si el president es un votante que no está registrado debe generar una excepción
+	* si el tipo de mesa no es válido debe generar una excepción
+	* Los tipos válidos son: “Enf_Preex”, “Mayor65”, “General” y “Trabajador”
+	*/
+	public int agregarMesa(String tipoMesa, int dni) throws Exception {
 		//falta completar las variables de las mesas
 		//validar dni y que este sin turno
-		if(tipoMesa.equals("Enf_Preex")) {
+		if(estaEnPadron(dni) || !(votantes.get(dni).tieneTurnoAsignado()) || !(validarDato(tipoMesa)) ) {
+			throw new Exception("datos no validos"); //try and catch
+		}
+		if(tipoMesa.equals("Enf_Preex") ) {
 			mesas.put(contMesa, new MesaPersonaDeRiesgo("Enf_Preex",contMesa, dni));
 			contMesa++;
 		}
-		if(tipoMesa.equals("Mayor65")) {
-			mesas.put(contMesa, new MesaMayoresDeEdad());
+		if(tipoMesa.equals("Mayor65") ) {
+			mesas.put(contMesa, new MesaMayoresDeEdad("Mayor65", contMesa, dni));
 			contMesa++;
 		}
 		if(tipoMesa.equals("General")) {
-			mesas.put(contMesa, new MesaComun());
+			mesas.put(contMesa, new MesaComun("General", contMesa, dni));
 			contMesa++;
 		}
-		if(tipoMesa.equals("Trabajador")) {
-			mesas.put(contMesa, new MesaTrabajadores());
+		if(tipoMesa.equals("Trabajador") ) {
+			mesas.put(contMesa, new MesaTrabajadores("Trabajador", contMesa, dni));
 			contMesa++;
 		}
 		return contMesa;
@@ -63,12 +72,37 @@ public class SistemaVotacion {
 			return false;
 		}
 	}
-	public Tupla<Integer,Integer> asignarTurno(int dni){
+	/* Asigna un turno a un votante determinado.
+	* - Si el DNI no pertenece a un votante registrado debe generar una excepción.
+	* - Si el votante ya tiene turno asignado se devuelve el turno como: Número de
+	* Mesa y Franja Horaria.
+	* - Si aún no tiene turno asignado se busca una franja horaria disponible en una
+	* mesa del tipo correspondiente al votante y se devuelve el turno asignado, como
+	* Número de Mesa y Franja Horaria.
+	* - Si no hay mesas con horarios disponibles no modifica nada y devuelve null.
+	* (Se supone que el turno permitirá conocer la mesa y la franja horaria asignada)
+	*/
+	public Tupla<Integer,Integer> asignarTurno(int dni) throws Exception{
 		//definir mesa y agregar el turno en mesa
-		if(estaEnPadron(dni) && !tieneTurnoAsignado(dni)) {
-			return new Tupla(1,2);
+		//elif???????
+		if( !(estaEnPadron(dni))) {
+			throw new Exception("datos no validos"); //try and catch
 		}
-		return new Tupla(1,2);
+		if(votantes.get(dni).tieneTurnoAsignado()) {
+			return votantes.get(dni).devolverTurnoPersona();
+		}
+		if(votantes.get(dni).tieneEnfPrevia()) {
+			for(Integer claves : mesas.keySet()) {
+				if(mesas.get(claves).tipoDeMesa().equals("Enf_Preex") && mesas.get(claves).dameFranjaHorariaDisponible() != 0) {
+					mesas.get(claves).descontarUnCupoDeFranja(mesas.get(claves).dameFranjaHorariaDisponible()); //cuento que cada vez que llamo a la funcion me devuelva el mismo horario
+					votantes.get(dni).asignarMesaYFranja(mesas.get(claves).dameCodigoDeMesa(),mesas.get(claves).dameFranjaHorariaDisponible());
+				}
+			}
+		}
+		
+		
+		return votantes.get(dni).devolverTurnoPersona();
+		
 	}
 	
 	public int asignarTurno() {
@@ -92,13 +126,29 @@ public class SistemaVotacion {
 		}
 		return turnosDeMesa;
 	}
+//	 Consulta el turno de un votante dado su DNI. Devuelve Mesa y franja horaria.
+//	* - Si el DNI no pertenece a un votante genera una excepción.
+//	* - Si el votante no tiene turno devuelve null.
 	
 	public Tupla<Integer, Integer> consultarTurno(int dni){
-		//el cupon de su turno debe estar en mesa y persona
-		return null;
+		if(votantes.get(dni).voto() && estaEnPadron(dni)) {
+			return votantes.get(dni).devolverTurnoPersona();
+		}else {
+			return null;
+		}
 	}
+	/* Dado un número de mesa, devuelve una Map cuya clave es la franja horaria y
+	* el valor es una lista con los DNI de los votantes asignados a esa franja.
+	* Sin importar si se presentaron o no a votar.
+	* - Si el número de mesa no es válido genera una excepción.
+	* - Si no hay asignados devuelve null.
+	*/
 	
 	public Map<Integer,List<Integer>> asignadosAMesa(int numMesa){
+		
+		
+		
+		
 		return null;
 	}
 	
