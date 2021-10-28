@@ -8,7 +8,6 @@ public abstract class Mesa {
 	public Mesa() {
 		
 	}
-	public abstract void designarPresidente(int dni);
 	
 	public abstract int cuposRestante();
 	

@@ -67,6 +67,10 @@ public class Persona {
 	public Tupla<Integer, Integer> devolverTurnoPersona(){
 		return dondeVota;
 	}
+	public Tupla<Integer, Integer> getDondeVota() {
+		return dondeVota;
+	}
+	
 	
 
 }

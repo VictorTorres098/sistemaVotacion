@@ -1,21 +1,26 @@
 package votacionPackage;
 
+import java.util.HashMap;
+
 public class MesaTrabajadores extends Mesa {
 	private String tipoMesa;
 	private Integer cod;
 	private int presidenteMesa;
-	//unica franja horaria 8 hasta 12hs cupos limitados
+	private HashMap<Integer, Integer> franjasHorariasDisponibles;
+	private Integer cupos;
+	//unica franja horaria 8 hasta 12hs cupos ilimitados
 	
 	public MesaTrabajadores(String tipoMesa, Integer cod, int presidenteMesa) {
 		this.tipoMesa = tipoMesa;
 		this.cod = cod;
 		this.presidenteMesa = presidenteMesa;
-	}
-
-	@Override
-	public void designarPresidente(int dni) {
-		// TODO Auto-generated method stub
-		
+		this.franjasHorariasDisponibles = new HashMap<Integer, Integer>();
+		this.cupos = 0;
+		franjasHorariasDisponibles.put(8, cupos);
+		franjasHorariasDisponibles.put(9, cupos);
+		franjasHorariasDisponibles.put(10, cupos);
+		franjasHorariasDisponibles.put(11, cupos);
+		franjasHorariasDisponibles.put(12, cupos);
 	}
 
 	@Override
@@ -38,8 +43,7 @@ public class MesaTrabajadores extends Mesa {
 
 	@Override
 	public String tipoDeMesa() {
-		// TODO Auto-generated method stub
-		return null;
+		return tipoMesa;
 	}
 
 	@Override
@@ -56,7 +60,7 @@ public class MesaTrabajadores extends Mesa {
 
 	@Override
 	public void descontarUnCupoDeFranja(Integer horario) {
-		// TODO Auto-generated method stub
+		//se agrega no se descuenta!!
 		
 	}
 

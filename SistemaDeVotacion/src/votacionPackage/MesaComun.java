@@ -29,13 +29,6 @@ public class MesaComun extends Mesa {
 		franjasHorariasDisponibles.put(18, cupos);
 		
 	}
-	
-
-	@Override
-	public void designarPresidente(int dni) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public int cuposRestante() {
@@ -57,8 +50,7 @@ public class MesaComun extends Mesa {
 
 	@Override
 	public String tipoDeMesa() {
-		// TODO Auto-generated method stub
-		return null;
+		return tipoMesa;
 	}
 
 
@@ -83,19 +75,14 @@ public class MesaComun extends Mesa {
 			return false;
 		}
 	}
-
-
 	@Override
 	public void descontarUnCupoDeFranja(Integer horario) {
-		
-		
+		int nuevoValorDeCupo = franjasHorariasDisponibles.get(horario) - 1; //descuento uno al cupo
+		franjasHorariasDisponibles.put(horario, nuevoValorDeCupo);
 	}
-
-
 	@Override
 	public int dameCodigoDeMesa() {
-		// TODO Auto-generated method stub
-		return 0;
+		return cod;
 	}
 
 }

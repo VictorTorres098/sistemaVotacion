@@ -12,10 +12,10 @@ public class SistemaVotacion {
 	private HashMap<Integer, Persona> votantes;
 	private int contMesa;
 	
-	public SistemaVotacion(String nombreSistema) throws Exception {
-		if(nombreSistema.equals(null)) {
-			throw new Exception("El votante no tiene la edad permitida para el sistema de votacion"); //usar try and catch
-		}
+	public SistemaVotacion(String nombreSistema) {
+//		if(nombreSistema.equals(null)) {
+//			throw new Exception("El votante no tiene la edad permitida para el sistema de votacion"); //usar try and catch
+//		}
 		votantes = new HashMap<Integer, Persona>();
 		contMesa = 0;
 	}
@@ -92,22 +92,55 @@ public class SistemaVotacion {
 			return votantes.get(dni).devolverTurnoPersona();
 		}
 		if(votantes.get(dni).tieneEnfPrevia()) {
-			for(Integer claves : mesas.keySet()) {
-				if(mesas.get(claves).tipoDeMesa().equals("Enf_Preex") && mesas.get(claves).dameFranjaHorariaDisponible() != 0) {
-					mesas.get(claves).descontarUnCupoDeFranja(mesas.get(claves).dameFranjaHorariaDisponible()); //cuento que cada vez que llamo a la funcion me devuelva el mismo horario
-					votantes.get(dni).asignarMesaYFranja(mesas.get(claves).dameCodigoDeMesa(),mesas.get(claves).dameFranjaHorariaDisponible());
-				}
+			int codMesaDisponible = dameMesaEspecialConCupos("Enf_Preex");				//busca la mesa especial y devuelve su cod ahora podemos trabajar sobre esa mesa!
+			int horario = mesas.get(codMesaDisponible).dameFranjaHorariaDisponible();   //asigno a la variable algun horario disponible de la mesa
+			votantes.get(dni).asignarMesaYFranja(codMesaDisponible, horario);			//al votante asigno el codMMesa, y su horario
+			mesas.get(codMesaDisponible).descontarUnCupoDeFranja(horario);				//descuento de la mesa el cupon de la franja 	
+			//a mesa pasarle el horario y el dni
+		}
+		if(votantes.get(dni).esMayorDeEdad()) {
+			int codMesaDisponible = dameMesaEspecialConCupos("Mayor65");				//busca la mesa especial y devuelve su cod ahora podemos trabajar sobre esa mesa!
+			int horario = mesas.get(codMesaDisponible).dameFranjaHorariaDisponible();   //asigno a la variable algun horario disponible de la mesa
+			votantes.get(dni).asignarMesaYFranja(codMesaDisponible, horario);			//al votante asigno el codMMesa, y su horario
+			mesas.get(codMesaDisponible).descontarUnCupoDeFranja(horario);				//descuento de la mesa el cupon de la franja	
+		}
+		if(votantes.get(dni).trabajaDiaVotacion()) {
+			int codMesaDisponible = dameMesaEspecialConCupos("Trabajador");				//busca la mesa especial y devuelve su cod ahora podemos trabajar sobre esa mesa!
+			int horario = mesas.get(codMesaDisponible).dameFranjaHorariaDisponible();   //asigno a la variable algun horario disponible de la mesa
+			votantes.get(dni).asignarMesaYFranja(codMesaDisponible, horario);			//al votante asigno el codMMesa, y su horario
+			mesas.get(codMesaDisponible).descontarUnCupoDeFranja(horario);				//descuento de la mesa el cupon de la franja
+		}
+		if(!votantes.get(dni).trabajaDiaVotacion() && !votantes.get(dni).esMayorDeEdad() && !votantes.get(dni).tieneEnfPrevia() ) {
+			int codMesaDisponible = dameMesaEspecialConCupos("General");				//busca la mesa especial y devuelve su cod ahora podemos trabajar sobre esa mesa!
+			int horario = mesas.get(codMesaDisponible).dameFranjaHorariaDisponible();   //asigno a la variable algun horario disponible de la mesa
+			votantes.get(dni).asignarMesaYFranja(codMesaDisponible, horario);			//al votante asigno el codMMesa, y su horario
+			mesas.get(codMesaDisponible).descontarUnCupoDeFranja(horario);
+		}
+		return votantes.get(dni).devolverTurnoPersona();
+	}
+	private int dameMesaEspecialConCupos(String condicionEspecialMesa) {
+		int codMesa = 0;
+		for(Integer claves : mesas.keySet()) {
+			if(mesas.get(claves).tipoDeMesa().equals(condicionEspecialMesa) && mesas.get(claves).dameFranjaHorariaDisponible() !=0) {
+				codMesa = claves; 
 			}
 		}
-		
-		
-		return votantes.get(dni).devolverTurnoPersona();
-		
+		return codMesa;
 	}
-	
-	public int asignarTurno() {
-		//usar iteradores
-		return -1;
+	/* Asigna turnos automáticamente a los votantes sin turno.
+	* El sistema busca si hay alguna mesa y franja horaria factible en la que haya disponibilidad.
+	* Devuelve la cantidad de turnos que pudo asignar.
+	*/
+
+	public int asignarTurno() throws Exception {
+		int cont = 0;
+		for(Integer claves : votantes.keySet()) {
+			if(!votantes.get(claves).tieneTurnoAsignado()) {
+				asignarTurno(claves);
+				cont++;
+			}
+		}
+		return cont;
 	}
 	
 	public boolean votar(int dni) {
@@ -143,14 +176,23 @@ public class SistemaVotacion {
 	* - Si el número de mesa no es válido genera una excepción.
 	* - Si no hay asignados devuelve null.
 	*/
-	
+	//recorrer a los votantes, ver su numero de mesa y agregarlos al map
 	public Map<Integer,List<Integer>> asignadosAMesa(int numMesa){
 		
+		for(Integer claves : votantes.keySet()) {
+			//votantes.get(claves).getDondeVota().valor1
+		}
 		
 		
 		
 		return null;
 	}
+	/*
+	* Consultar la cantidad de votantes sin turno asignados a cada tipo de mesa.
+	* Devuelve una Lista de Tuplas donde se vincula el tipo de mesa con la cantidad
+	* de votantes sin turno que esperan ser asignados a ese tipo de mesa.
+	* La lista no puede tener 2 elementos para el mismo tipo de mesa.
+	*/
 	
 	public List<Tupla<String, Integer>> sinTurnoSegunTipoMesa(){
 		return null;
