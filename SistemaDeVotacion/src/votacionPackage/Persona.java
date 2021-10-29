@@ -79,8 +79,4 @@ public class Persona {
 	public Integer getDni() {
 		return dni;
 	}
-	
-	
-	
-
 }
