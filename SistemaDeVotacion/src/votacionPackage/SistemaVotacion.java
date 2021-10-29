@@ -179,22 +179,32 @@ public class SistemaVotacion {
 	*/
 	//recorrer a los votantes, ver su numero de mesa y agregarlos al map
 	public Map<Integer,List<Integer>> asignadosAMesa(int numMesa){
+		Map<Integer, List<Integer>> asigMesa = new HashMap<Integer,List<Integer>>();
+		asigMesa.put(8, null);
+		asigMesa.put(9, null);
+		asigMesa.put(10, null);
+		asigMesa.put(11, null);
+		asigMesa.put(12, null);
+		asigMesa.put(13, null);
+		asigMesa.put(14, null);
+		asigMesa.put(15, null);
+		asigMesa.put(16, null);
+		asigMesa.put(17, null);
+		asigMesa.put(18, null);
 		
-		for(Integer claves : votantes.keySet()) {
-			//votantes.get(claves).getDondeVota().valor1
+		for(Integer horarios : asigMesa.keySet()) {
+			asigMesa.put(horarios, dameListadeVotantesPorHorario(horarios,numMesa));
 		}
-		
-		
-		
-		return null;
+		return asigMesa;
 	}
-	public List<Integer> dameListadeVotantesPorHorario(int horario , int mesa){
+	private List<Integer> dameListadeVotantesPorHorario(int horario , int mesa){
 		List<Integer> listaDni = new ArrayList<Integer>();
 		for(Integer claves: votantes.keySet()) {
 			if(votantes.get(claves).dameMesa().equals(mesa) && votantes.get(claves).dameHorario().equals(horario)) {
-				
+				listaDni.add(votantes.get(claves).getDni());
 			}
 		}
+		return listaDni;
 	}
 	/*
 	* Consultar la cantidad de votantes sin turno asignados a cada tipo de mesa.
@@ -202,7 +212,6 @@ public class SistemaVotacion {
 	* de votantes sin turno que esperan ser asignados a ese tipo de mesa.
 	* La lista no puede tener 2 elementos para el mismo tipo de mesa.
 	*/
-	
 	public List<Tupla<String, Integer>> sinTurnoSegunTipoMesa(){
 		return null;
 	}

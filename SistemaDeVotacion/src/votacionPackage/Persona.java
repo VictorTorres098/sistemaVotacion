@@ -76,6 +76,10 @@ public class Persona {
 	public Integer dameHorario() {
 		return dondeVota.valor2; //valor2 Horario;
 	}
+	public Integer getDni() {
+		return dni;
+	}
+	
 	
 	
 
