@@ -1,5 +1,6 @@
 package votacionPackage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,12 +35,12 @@ public class SistemaVotacion {
 	public boolean tieneTurnoAsignado(int dni) {
 		return votantes.get(dni).tieneTurnoAsignado();
 	}
-	/* Agregar una nueva mesa del tipo dado en el parámetro y asignar el presidente
-	* de cada una, el cual deberá estar entre los votantes registrados y sin turno asignado.
-	* - Devuelve el número de mesa creada.
-	* si el president es un votante que no está registrado debe generar una excepción
-	* si el tipo de mesa no es válido debe generar una excepción
-	* Los tipos válidos son: “Enf_Preex”, “Mayor65”, “General” y “Trabajador”
+	/* Agregar una nueva mesa del tipo dado en el parï¿½metro y asignar el presidente
+	* de cada una, el cual deberï¿½ estar entre los votantes registrados y sin turno asignado.
+	* - Devuelve el nï¿½mero de mesa creada.
+	* si el president es un votante que no estï¿½ registrado debe generar una excepciï¿½n
+	* si el tipo de mesa no es vï¿½lido debe generar una excepciï¿½n
+	* Los tipos vï¿½lidos son: ï¿½Enf_Preexï¿½, ï¿½Mayor65ï¿½, ï¿½Generalï¿½ y ï¿½Trabajadorï¿½
 	*/
 	public int agregarMesa(String tipoMesa, int dni) throws Exception {
 		//falta completar las variables de las mesas
@@ -73,14 +74,14 @@ public class SistemaVotacion {
 		}
 	}
 	/* Asigna un turno a un votante determinado.
-	* - Si el DNI no pertenece a un votante registrado debe generar una excepción.
-	* - Si el votante ya tiene turno asignado se devuelve el turno como: Número de
+	* - Si el DNI no pertenece a un votante registrado debe generar una excepciï¿½n.
+	* - Si el votante ya tiene turno asignado se devuelve el turno como: Nï¿½mero de
 	* Mesa y Franja Horaria.
-	* - Si aún no tiene turno asignado se busca una franja horaria disponible en una
+	* - Si aï¿½n no tiene turno asignado se busca una franja horaria disponible en una
 	* mesa del tipo correspondiente al votante y se devuelve el turno asignado, como
-	* Número de Mesa y Franja Horaria.
+	* Nï¿½mero de Mesa y Franja Horaria.
 	* - Si no hay mesas con horarios disponibles no modifica nada y devuelve null.
-	* (Se supone que el turno permitirá conocer la mesa y la franja horaria asignada)
+	* (Se supone que el turno permitirï¿½ conocer la mesa y la franja horaria asignada)
 	*/
 	public Tupla<Integer,Integer> asignarTurno(int dni) throws Exception{
 		//definir mesa y agregar el turno en mesa
@@ -127,7 +128,7 @@ public class SistemaVotacion {
 		}
 		return codMesa;
 	}
-	/* Asigna turnos automáticamente a los votantes sin turno.
+	/* Asigna turnos automï¿½ticamente a los votantes sin turno.
 	* El sistema busca si hay alguna mesa y franja horaria factible en la que haya disponibilidad.
 	* Devuelve la cantidad de turnos que pudo asignar.
 	*/
@@ -160,7 +161,7 @@ public class SistemaVotacion {
 		return turnosDeMesa;
 	}
 //	 Consulta el turno de un votante dado su DNI. Devuelve Mesa y franja horaria.
-//	* - Si el DNI no pertenece a un votante genera una excepción.
+//	* - Si el DNI no pertenece a un votante genera una excepciï¿½n.
 //	* - Si el votante no tiene turno devuelve null.
 	
 	public Tupla<Integer, Integer> consultarTurno(int dni){
@@ -170,10 +171,10 @@ public class SistemaVotacion {
 			return null;
 		}
 	}
-	/* Dado un número de mesa, devuelve una Map cuya clave es la franja horaria y
+	/* Dado un nï¿½mero de mesa, devuelve una Map cuya clave es la franja horaria y
 	* el valor es una lista con los DNI de los votantes asignados a esa franja.
 	* Sin importar si se presentaron o no a votar.
-	* - Si el número de mesa no es válido genera una excepción.
+	* - Si el nï¿½mero de mesa no es vï¿½lido genera una excepciï¿½n.
 	* - Si no hay asignados devuelve null.
 	*/
 	//recorrer a los votantes, ver su numero de mesa y agregarlos al map
@@ -186,6 +187,14 @@ public class SistemaVotacion {
 		
 		
 		return null;
+	}
+	public List<Integer> dameListadeVotantesPorHorario(int horario , int mesa){
+		List<Integer> listaDni = new ArrayList<Integer>();
+		for(Integer claves: votantes.keySet()) {
+			if(votantes.get(claves).dameMesa().equals(mesa) && votantes.get(claves).dameHorario().equals(horario)) {
+				
+			}
+		}
 	}
 	/*
 	* Consultar la cantidad de votantes sin turno asignados a cada tipo de mesa.

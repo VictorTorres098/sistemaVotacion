@@ -70,6 +70,12 @@ public class Persona {
 	public Tupla<Integer, Integer> getDondeVota() {
 		return dondeVota;
 	}
+	public Integer dameMesa() {
+		return dondeVota.valor1; //valor1 mesa 
+	}
+	public Integer dameHorario() {
+		return dondeVota.valor2; //valor2 Horario;
+	}
 	
 	
 

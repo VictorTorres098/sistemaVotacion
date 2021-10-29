@@ -9,6 +9,7 @@ public class MesaComun extends Mesa {
 	private HashMap<Integer, Integer> franjasHorariasDisponibles;
 	private Integer cupos;
 	
+	
 	public MesaComun(String tipoMesa, Integer cod, int presidenteMesa) {
 		this.tipoMesa = tipoMesa;
 		this.cod = cod;
