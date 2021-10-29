@@ -53,7 +53,7 @@ public class Persona {
 		return this.turno;
 	}
 	public void confirmarTurno() {
-		this.turno = true;
+		turno = true;
 	}
 	public boolean voto() {
 		return this.voto;

@@ -13,11 +13,12 @@ public class SistemaVotacion {
 	private HashMap<Integer, Persona> votantes;
 	private int contMesa;
 	
-	public SistemaVotacion(String nombreSistema) {
-//		if(nombreSistema.equals(null)) {
-//			throw new Exception("El votante no tiene la edad permitida para el sistema de votacion"); //usar try and catch
-//		}
+	public SistemaVotacion(String nombreSistema) throws Exception {
+		if(nombreSistema.equals(null)) {
+			throw new Exception("El votante no tiene la edad permitida para el sistema de votacion"); //usar try and catch
+		}
 		votantes = new HashMap<Integer, Persona>();
+		mesas = new HashMap<Integer, Mesa>();
 		contMesa = 0;
 	}
 	
@@ -29,8 +30,11 @@ public class SistemaVotacion {
 		}
 	}
 	
-	public boolean estaEnPadron(int dni) {
-		return votantes.containsKey(dni); //generar la excepcion aca si esta el votante
+	public boolean estaEnPadron(int dni) throws Exception {
+		if(!votantes.containsKey(dni)) {
+			throw new Exception("el votante ya esta registrado");
+		}
+		return votantes.containsKey(dni);
 	}  
 	public boolean tieneTurnoAsignado(int dni) {
 		return votantes.get(dni).tieneTurnoAsignado();
@@ -45,7 +49,7 @@ public class SistemaVotacion {
 	public int agregarMesa(String tipoMesa, int dni) throws Exception {
 		//falta completar las variables de las mesas
 		//validar dni y que este sin turno
-		if(estaEnPadron(dni) || !(votantes.get(dni).tieneTurnoAsignado()) || !(validarDato(tipoMesa)) ) {
+		if(!estaEnPadron(dni) || !(votantes.get(dni).tieneTurnoAsignado()) || !(validarDato(tipoMesa)) ) {
 			throw new Exception("datos no validos"); //try and catch
 		}
 		if(tipoMesa.equals("Enf_Preex") ) {
@@ -164,7 +168,7 @@ public class SistemaVotacion {
 //	* - Si el DNI no pertenece a un votante genera una excepci�n.
 //	* - Si el votante no tiene turno devuelve null.
 	
-	public Tupla<Integer, Integer> consultarTurno(int dni){
+	public Tupla<Integer, Integer> consultarTurno(int dni) throws Exception{
 		if(votantes.get(dni).voto() && estaEnPadron(dni)) {
 			return votantes.get(dni).devolverTurnoPersona();
 		}else {
