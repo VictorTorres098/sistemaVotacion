@@ -213,7 +213,27 @@ public class SistemaVotacion {
 	* La lista no puede tener 2 elementos para el mismo tipo de mesa.
 	*/
 	public List<Tupla<String, Integer>> sinTurnoSegunTipoMesa(){
-		return null;
+		Integer contEnf = 0;
+		Integer contMayor = 0;
+		Integer contTrabj = 0;
+		Integer contComun = 0;
+		List<Tupla<String, Integer>> vinculo = new ArrayList<Tupla<String,Integer>>();
+		for(Integer claves: votantes.keySet()) {
+			if(votantes.get(claves).tieneEnfPrevia())
+				contEnf++;
+			if(votantes.get(claves).esMayorDeEdad())
+				contEnf++;
+			if(votantes.get(claves).trabajaDiaVotacion())
+				contTrabj++;
+			if(!votantes.get(claves).trabajaDiaVotacion() && !votantes.get(claves).esMayorDeEdad() && !votantes.get(claves).tieneEnfPrevia())
+				contComun++;
+		}
+		vinculo.add(new Tupla<>("Enf_Preex",contEnf));
+		vinculo.add(new Tupla<>("Mayor65", contMayor));
+		vinculo.add(new Tupla<>("General", contComun));
+		vinculo.add(new Tupla<>("Trabajador", contTrabj));
+		
+		return vinculo;
 	}
 
 }
