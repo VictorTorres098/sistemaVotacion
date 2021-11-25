@@ -50,7 +50,7 @@ public class Persona {
 		}
 	}
 	public boolean tieneTurnoAsignado() {
-		return this.turno;
+		return turno;
 	}
 	public void confirmarTurno() {
 		turno = true;

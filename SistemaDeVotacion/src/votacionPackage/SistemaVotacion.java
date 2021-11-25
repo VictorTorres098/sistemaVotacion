@@ -40,7 +40,11 @@ public class SistemaVotacion {
 		return votantes.containsKey(dni);
 	}  
 	public boolean tieneTurnoAsignado(int dni) {
-		return votantes.get(dni).tieneTurnoAsignado();
+		if(votantes.get(dni).tieneTurnoAsignado()) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	/* Agregar una nueva mesa del tipo dado en el par�metro y asignar el presidente
 	* de cada una, el cual deber� estar entre los votantes registrados y sin turno asignado.
@@ -50,31 +54,39 @@ public class SistemaVotacion {
 	* Los tipos v�lidos son: �Enf_Preex�, �Mayor65�, �General� y �Trabajador�
 	*/
 	public int agregarMesa(String tipoMesa, int dni){
-		//falta completar las variables de las mesas
-		//validar dni y que este sin turno
-		if(!estaEnPadron(dni) || !(votantes.get(dni).tieneTurnoAsignado()) || !(validarDato(tipoMesa)) ) {
-			throw new RuntimeException("datos no validos"); //try and catch
+		if(!estaEnPadron(dni)) {// || !(votantes.get(dni).tieneTurnoAsignado()) || !(validarDato(tipoMesa)) ) {
+			throw new RuntimeException("dni invalido"); 
+		}
+		if(tieneTurnoAsignado(dni)) {
+			throw new RuntimeException("tiene Turno Asignado");  //funciona pero como?????
+		}
+		if(!(validarDato(tipoMesa))) {
+			throw new RuntimeException("tipo de mesa invalido"); 
 		}
 		if(tipoMesa.equals("Enf_Preex") ) {
 			mesas.put(contMesa, new MesaPersonaDeRiesgo("Enf_Preex",contMesa, dni));
-			contMesa++;
+			this.contMesa++;
+			return contMesa;
 		}
 		if(tipoMesa.equals("Mayor65") ) {
 			mesas.put(contMesa, new MesaMayoresDeEdad("Mayor65", contMesa, dni));
-			contMesa++;
+			this.contMesa++;
+			return contMesa;
 		}
 		if(tipoMesa.equals("General")) {
 			mesas.put(contMesa, new MesaComun("General", contMesa, dni));
-			contMesa++;
+			this.contMesa++;
+			return contMesa;
 		}
 		if(tipoMesa.equals("Trabajador") ) {
 			mesas.put(contMesa, new MesaTrabajadores("Trabajador", contMesa, dni));
-			contMesa++;
+			this.contMesa++;
+			return contMesa;
 		}
-		return contMesa;
+		return this.contMesa;
 	}
 	public boolean validarDato(String tipoMesa) {
-		if(tipoMesa.equals("Enf_Preex") || tipoMesa.equals("Mayor65") || tipoMesa.equals("Trabajador")) {
+		if(tipoMesa.equals("Enf_Preex") || tipoMesa.equals("Mayor65") || tipoMesa.equals("Trabajador") || tipoMesa.equals("General") ) {
 			return true;
 		}else {
 			return false;
