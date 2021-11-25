@@ -12,28 +12,31 @@ public class SistemaVotacion {
 	private HashMap <Integer, Mesa> mesas;
 	private HashMap<Integer, Persona> votantes;
 	private int contMesa;
-	
-	public SistemaVotacion(String nombreSistema) throws Exception {
+	/* Constructor del sistema de asignación de turnos.
+	* Si el parámetro nombre fuera null, debe generar una excepción.
+	*/
+	public SistemaVotacion(String nombreSistema){
 		if(nombreSistema.equals(null)) {
-			throw new Exception("El votante no tiene la edad permitida para el sistema de votacion"); //usar try and catch
+			throw new RuntimeException("El sistema debe tener un nombre"); //usar try and catch
 		}
 		votantes = new HashMap<Integer, Persona>();
 		mesas = new HashMap<Integer, Mesa>();
 		contMesa = 0;
 	}
-	
-	public void registrarVotante(Integer dni, String nombre, int edad, boolean enfPrevia, boolean trabaja) throws Exception {
-		if(!estaEnPadron(dni)) {
+	/* Registrar a los votantes. Antes de asignar un turno el votante debe estar registrado
+	* en el sistema.
+	* Si no lo está, se genera una excepción.
+	* Si la edad es menor a 16, se genera una excepción
+	*/
+	public void registrarVotante(Integer dni, String nombre, int edad, boolean enfPrevia, boolean trabaja){
+		if(!estaEnPadron(dni) && edad >= 16) { //O(1)
 			votantes.put(dni, new Persona(nombre,dni,edad,enfPrevia,trabaja));
-		}else {
-			throw new Exception("El votante ya existe"); //try and catch
+		}else{
+			throw new RuntimeException("El votante ya existe o tiene una edad invalida"); //try and catch
 		}
 	}
 	
-	public boolean estaEnPadron(int dni) throws Exception {
-		if(!votantes.containsKey(dni)) {
-			throw new Exception("el votante ya esta registrado");
-		}
+	public boolean estaEnPadron(int dni) {
 		return votantes.containsKey(dni);
 	}  
 	public boolean tieneTurnoAsignado(int dni) {
@@ -46,11 +49,11 @@ public class SistemaVotacion {
 	* si el tipo de mesa no es v�lido debe generar una excepci�n
 	* Los tipos v�lidos son: �Enf_Preex�, �Mayor65�, �General� y �Trabajador�
 	*/
-	public int agregarMesa(String tipoMesa, int dni) throws Exception {
+	public int agregarMesa(String tipoMesa, int dni){
 		//falta completar las variables de las mesas
 		//validar dni y que este sin turno
 		if(!estaEnPadron(dni) || !(votantes.get(dni).tieneTurnoAsignado()) || !(validarDato(tipoMesa)) ) {
-			throw new Exception("datos no validos"); //try and catch
+			throw new RuntimeException("datos no validos"); //try and catch
 		}
 		if(tipoMesa.equals("Enf_Preex") ) {
 			mesas.put(contMesa, new MesaPersonaDeRiesgo("Enf_Preex",contMesa, dni));
@@ -87,11 +90,11 @@ public class SistemaVotacion {
 	* - Si no hay mesas con horarios disponibles no modifica nada y devuelve null.
 	* (Se supone que el turno permitir� conocer la mesa y la franja horaria asignada)
 	*/
-	public Tupla<Integer,Integer> asignarTurno(int dni) throws Exception{
+	public Tupla<Integer,Integer> asignarTurno(int dni){
 		//definir mesa y agregar el turno en mesa
 		//elif???????
 		if( !(estaEnPadron(dni))) {
-			throw new Exception("datos no validos"); //try and catch
+			throw new RuntimeException("datos no validos"); //try and catch
 		}
 		if(votantes.get(dni).tieneTurnoAsignado()) {
 			return votantes.get(dni).devolverTurnoPersona();
@@ -125,7 +128,7 @@ public class SistemaVotacion {
 	}
 	private int dameMesaEspecialConCupos(String condicionEspecialMesa) {
 		int codMesa = 0;
-		for(Integer claves : mesas.keySet()) {
+		for(Integer claves : mesas.keySet()) { 
 			if(mesas.get(claves).tipoDeMesa().equals(condicionEspecialMesa) && mesas.get(claves).dameFranjaHorariaDisponible() !=0) {
 				codMesa = claves; 
 			}
@@ -137,7 +140,7 @@ public class SistemaVotacion {
 	* Devuelve la cantidad de turnos que pudo asignar.
 	*/
 
-	public int asignarTurno() throws Exception {
+	public int asignarTurno() {
 		int cont = 0;
 		for(Integer claves : votantes.keySet()) {
 			if(!votantes.get(claves).tieneTurnoAsignado()) {
@@ -168,7 +171,7 @@ public class SistemaVotacion {
 //	* - Si el DNI no pertenece a un votante genera una excepci�n.
 //	* - Si el votante no tiene turno devuelve null.
 	
-	public Tupla<Integer, Integer> consultarTurno(int dni) throws Exception{
+	public Tupla<Integer, Integer> consultarTurno(int dni){
 		if(votantes.get(dni).voto() && estaEnPadron(dni)) {
 			return votantes.get(dni).devolverTurnoPersona();
 		}else {

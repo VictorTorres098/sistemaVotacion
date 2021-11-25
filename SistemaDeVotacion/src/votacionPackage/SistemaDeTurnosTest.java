@@ -23,7 +23,7 @@ public class SistemaDeTurnosTest {
 	private static final Fixture F = Fixture.INSTANCE;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp(){
 		sistema = new SistemaVotacion("Sede UNGS");
 				
 		sistema.registrarVotante(
@@ -87,7 +87,7 @@ public class SistemaDeTurnosTest {
 	 * Se espera que al presidente a cargo se le asigne un Turno
 	 */
 	@Test
-	public void asignacionMesas() throws Exception {
+	public void asignacionMesas() {
 		final Integer numMesaEnfPreexistente = sistema.
 				agregarMesa(F.enfPreexistente, F.dniFrodo);  // frodo es el presidente
 		
@@ -170,7 +170,7 @@ public class SistemaDeTurnosTest {
 	 * Ya que cada algoritmo puede asignar a los votantes en distintas franjas
 	 */
 	@Test
-	public void asignacionPorTipoMesaTest() throws Exception {
+	public void asignacionPorTipoMesaTest(){
 		final Integer numMesaTrabajadores = sistema.
 				agregarMesa(F.trabajador, F.dniBilbo);
 		
@@ -216,7 +216,7 @@ public class SistemaDeTurnosTest {
 	 * deberia asignarse un Turno
 	 */
 	@Test
-	public void asignarTurnoTest() throws Exception {
+	public void asignarTurnoTest() {
 		sistema.agregarMesa(F.general, F.dniGaladriel);
 		
 		// <NumeroMesa, FranjaHoraria>
@@ -233,7 +233,7 @@ public class SistemaDeTurnosTest {
 	 * no deberia asignarse un Turno y lanza una excepcion
 	 */
 	@Test
-	public void asignarTurnoDniInvalidoTest() throws Exception {
+	public void asignarTurnoDniInvalidoTest() {
 		sistema.agregarMesa(F.general, F.dniGaladriel);
 		try {
 			sistema.asignarTurno(F.dniSinRegistrar);
@@ -249,7 +249,7 @@ public class SistemaDeTurnosTest {
 	 * No hay mesas, intento agregar un turno y devuelve null
 	 */
 	@Test
-	public void asignarTurnoInvalidoTest() throws Exception {
+	public void asignarTurnoInvalidoTest() {
 		assertNull(sistema.asignarTurno(F.dniFrodo));
 	}
 	
@@ -258,7 +258,7 @@ public class SistemaDeTurnosTest {
 	 * Luego, intenta votar otra vez y devuelve False
 	 */
 	@Test
-	public void votarTest() throws Exception {
+	public void votarTest() {
 		sistema.agregarMesa(F.general, F.dniGaladriel);
 		
 		sistema.asignarTurno(F.dniFrodo);
@@ -273,7 +273,7 @@ public class SistemaDeTurnosTest {
 	 * La asignacion de turnos por franja horaria debe ser valida
 	 */
 	@Test
-	public void irepFranjaHorariaTest() throws Exception {
+	public void irepFranjaHorariaTest() {
 		final List<Integer> dnis = generarNDnis(F.cantDnis);
 				
 		final Integer numMesa = sistema.agregarMesa(F.enfPreexistente, F.dniFrodo);

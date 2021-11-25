@@ -13,9 +13,9 @@ public class Persona {
 //	private Integer mesa;
 //	private Integer franja;
 	
-	public Persona(String nombre, Integer dni, int edad, boolean enfPrevia, boolean trabaja) throws Exception{
+	public Persona(String nombre, Integer dni, int edad, boolean enfPrevia, boolean trabaja){
 		if(edad<16) {
-			throw new Exception("El votante no tiene la edad permitida para el sistema de votacion");
+			throw new RuntimeException("El votante no tiene la edad permitida para el sistema de votacion");
 		}
 		this.nombre = nombre;
 		this.dni = dni;
