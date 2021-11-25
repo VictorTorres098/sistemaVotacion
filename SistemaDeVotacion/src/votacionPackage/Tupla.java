@@ -22,6 +22,6 @@ public class Tupla<T1, T2> {
 		this.valor2 = valor2;
 	}
 	public String toString() {
-		return ""+valor1.toString()+""+valor2.toString();
+		return "Numero De Mesa: "+valor1.toString()+" Franja Horaria: "+valor2.toString();
 	}
 }

@@ -105,8 +105,8 @@ public class SistemaVotacion {
 	public Tupla<Integer,Integer> asignarTurno(int dni){
 		//definir mesa y agregar el turno en mesa
 		//elif???????
-		if( !(estaEnPadron(dni))) {
-			throw new RuntimeException("datos no validos"); //try and catch
+		if(!(estaEnPadron(dni))) {
+			throw new RuntimeException("El votante no esta registrado en el sistema"); //try and catch
 		}
 		if(votantes.get(dni).tieneTurnoAsignado()) {
 			return votantes.get(dni).devolverTurnoPersona();
@@ -184,10 +184,13 @@ public class SistemaVotacion {
 //	* - Si el votante no tiene turno devuelve null.
 	
 	public Tupla<Integer, Integer> consultarTurno(int dni){
-		if(votantes.get(dni).voto() && estaEnPadron(dni)) {
-			return votantes.get(dni).devolverTurnoPersona();
-		}else {
+		if(!estaEnPadron(dni)) {
+			throw new RuntimeException("El DNI ingresado no pertenece a un votante"); 
+		}else if(votantes.get(dni).tieneTurnoAsignado()){  //pensar correctamente tieneTurnoAsignado 
 			return null;
+		}else {
+			Tupla<Integer, Integer> turno = new Tupla<Integer, Integer>(votantes.get(dni).dameMesa(), votantes.get(dni).dameHorario());
+			return turno;
 		}
 	}
 	/* Dado un n�mero de mesa, devuelve una Map cuya clave es la franja horaria y
@@ -197,7 +200,10 @@ public class SistemaVotacion {
 	* - Si no hay asignados devuelve null.
 	*/
 	//recorrer a los votantes, ver su numero de mesa y agregarlos al map
-	public Map<Integer,List<Integer>> asignadosAMesa(int numMesa){
+	public Map<Integer,List<Integer>> asignadosAMesa(int numMesa){	
+		if(!(mesas.containsKey(numMesa))) {
+			throw new RuntimeException("El numero de mesa ingresado no es valido");
+		}
 		Map<Integer, List<Integer>> asigMesa = new HashMap<Integer,List<Integer>>();
 		asigMesa.put(8, null);
 		asigMesa.put(9, null);
@@ -210,17 +216,17 @@ public class SistemaVotacion {
 		asigMesa.put(16, null);
 		asigMesa.put(17, null);
 		asigMesa.put(18, null);
-		
+				
 		for(Integer horarios : asigMesa.keySet()) {
 			asigMesa.put(horarios, dameListadeVotantesPorHorario(horarios,numMesa));
 		}
 		return asigMesa;
 	}
-	private List<Integer> dameListadeVotantesPorHorario(int horario , int mesa){
+	public List<Integer> dameListadeVotantesPorHorario(int horario , int numMesa){
 		List<Integer> listaDni = new ArrayList<Integer>();
 		for(Integer claves: votantes.keySet()) {
-			if(votantes.get(claves).dameMesa().equals(mesa) && votantes.get(claves).dameHorario().equals(horario)) {
-				listaDni.add(votantes.get(claves).getDni());
+			if(votantes.get(claves).tieneTurnoAsignado() && votantes.get(claves).dameHorario().equals(horario) && votantes.get(claves).dameMesa().equals(numMesa)) {
+				listaDni.add(claves);
 			}
 		}
 		return listaDni;
