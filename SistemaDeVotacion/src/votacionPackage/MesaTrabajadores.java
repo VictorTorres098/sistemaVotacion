@@ -70,4 +70,16 @@ public class MesaTrabajadores extends Mesa {
 		return 0;
 	}
 
+	@Override
+	public void asignarIDMesa() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int dameIDMesa() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

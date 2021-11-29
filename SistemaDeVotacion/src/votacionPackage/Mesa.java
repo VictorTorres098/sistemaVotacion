@@ -24,4 +24,8 @@ public abstract class Mesa {
 	public abstract void descontarUnCupoDeFranja(Integer horario);
 	
 	public abstract int dameCodigoDeMesa();
+	
+	public abstract void asignarIDMesa();
+	
+	public abstract int dameIDMesa();
 }

@@ -88,4 +88,18 @@ public class MesaMayoresDeEdad extends Mesa {
 		return cod;
 	}
 
+
+	@Override
+	public void asignarIDMesa() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public int dameIDMesa() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

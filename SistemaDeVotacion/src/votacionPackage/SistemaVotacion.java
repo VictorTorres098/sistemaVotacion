@@ -92,6 +92,16 @@ public class SistemaVotacion {
 			return false;
 		}
 	}
+	//Funcion auxiliar solo para observar cuantas mesas se creean y si los id son correctos
+	protected int cantidadDeMesasCreadas() {
+		return mesas.size();
+	}
+	protected void idDeMesas() {
+		for(Integer claves : mesas.keySet()) {
+			System.out.println(claves.toString());
+		}
+	}
+	//
 	/* Asigna un turno a un votante determinado.
 	* - Si el DNI no pertenece a un votante registrado debe generar una excepci�n.
 	* - Si el votante ya tiene turno asignado se devuelve el turno como: N�mero de
