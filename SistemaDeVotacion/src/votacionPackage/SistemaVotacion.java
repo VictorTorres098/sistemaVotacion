@@ -21,7 +21,7 @@ public class SistemaVotacion {
 		}
 		votantes = new HashMap<Integer, Persona>();
 		mesas = new HashMap<Integer, Mesa>();
-		contMesa = 0;
+		contMesa = -1;
 	}
 	/* Registrar a los votantes. Antes de asignar un turno el votante debe estar registrado
 	* en el sistema.
@@ -64,26 +64,27 @@ public class SistemaVotacion {
 			throw new RuntimeException("tipo de mesa invalido"); 
 		}
 		if(tipoMesa.equals("Enf_Preex") ) {
-			mesas.put(contMesa, new MesaPersonaDeRiesgo("Enf_Preex",contMesa, dni));
 			this.contMesa++;
-			return contMesa;
+			mesas.put(contMesa, new MesaPersonaDeRiesgo("Enf_Preex",contMesa, dni));
+			//this.contMesa++;
 		}
 		if(tipoMesa.equals("Mayor65") ) {
-			mesas.put(contMesa, new MesaMayoresDeEdad("Mayor65", contMesa, dni));
 			this.contMesa++;
-			return contMesa;
+			mesas.put(contMesa, new MesaMayoresDeEdad("Mayor65", contMesa, dni));
+			//this.contMesa++;
 		}
 		if(tipoMesa.equals("General")) {
-			mesas.put(contMesa, new MesaComun("General", contMesa, dni));
 			this.contMesa++;
-			return contMesa;
+			mesas.put(contMesa, new MesaComun("General", contMesa, dni));
+			//this.contMesa++;
 		}
 		if(tipoMesa.equals("Trabajador") ) {
-			mesas.put(contMesa, new MesaTrabajadores("Trabajador", contMesa, dni));
 			this.contMesa++;
-			return contMesa;
+			mesas.put(contMesa, new MesaTrabajadores("Trabajador", contMesa, dni));
+			//this.contMesa++;
 		}
-		return this.contMesa;
+		//this.contMesa++;
+		return contMesa;
 	}
 	public boolean validarDato(String tipoMesa) {
 		if(tipoMesa.equals("Enf_Preex") || tipoMesa.equals("Mayor65") || tipoMesa.equals("Trabajador") || tipoMesa.equals("General") ) {
