@@ -86,7 +86,7 @@ public class SistemaVotacion {
 		//this.contMesa++;
 		return contMesa;
 	}
-	public boolean validarDato(String tipoMesa) {
+	private boolean validarDato(String tipoMesa) {
 		if(tipoMesa.equals("Enf_Preex") || tipoMesa.equals("Mayor65") || tipoMesa.equals("Trabajador") || tipoMesa.equals("General") ) {
 			return true;
 		}else {
@@ -149,11 +149,22 @@ public class SistemaVotacion {
 		}
 		return votantes.get(dni).devolverTurnoPersona();
 	}
-	private int dameMesaEspecialConCupos(String condicionEspecialMesa) {
+	//comprobación de que las funciones de persona funcionen correctamente 
+	
+	protected boolean elVotanteTieneEnfPrev (int dni) {
+		return votantes.get(dni).tieneEnfPrevia();
+	}
+	protected boolean elVotanteEsMayorDeEdad(int dni) {
+		return votantes.get(dni).esMayorDeEdad();
+	}
+	protected boolean elVotanteTrabaj (int dni) {
+		return votantes.get(dni).trabajaDiaVotacion();
+	}
+	protected int dameMesaEspecialConCupos(String condicionEspecialMesa) {
 		int codMesa = 0;
 		for(Integer claves : mesas.keySet()) { 
-			if(mesas.get(claves).tipoDeMesa().equals(condicionEspecialMesa) && mesas.get(claves).dameFranjaHorariaDisponible() !=0) {
-				codMesa = claves; 
+			if(mesas.get(claves).tipoDeMesa().equals(condicionEspecialMesa)) { //&& mesas.get(claves).dameFranjaHorariaDisponible() !=0) {
+				codMesa = claves.intValue(); 
 			}
 		}
 		return codMesa;
